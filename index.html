@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時計ゲーム</title>
+    <title>とけいがくしゅうゲーム</title>
+    <!-- Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
         body {
-            font-family: 'Noto Sans JP', 'Inter', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #f0f4f8;
-            color: #333;
+            color: #334155;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,410 +19,487 @@
             margin: 0;
             padding: 20px;
         }
-
         .game-container {
             width: 100%;
             max-width: 600px;
-            text-align: center;
-            background-color: white;
+            background-color: #ffffff;
             border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1e40af;
-            margin-bottom: 8px;
-        }
-        
-        .level-selection {
-            margin: 20px 0;
-        }
-
-        .level-btn {
-            font-size: 1.125rem;
-            font-weight: 600;
-            padding: 12px 24px;
-            border-radius: 12px;
-            margin: 0 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .level-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-
-        .level-1-btn { background-color: #a7f3d0; color: #065f46; }
-        .level-2-btn { background-color: #fde68a; color: #b45309; }
-        .level-3-btn { background-color: #bfdbfe; color: #1e40af; }
-
-        .game-controls {
-            margin-top: 20px;
-        }
-
-        #prompt {
-            font-size: 1.5rem;
-            font-weight: 700;
-            min-height: 48px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 20px;
-            color: #1f2937;
+            gap: 20px;
         }
-        
-        #feedback {
-            font-size: 1.5rem;
-            font-weight: 700;
-            min-height: 48px;
-            margin-top: 20px;
-        }
-
-        #feedback.correct { color: #10b981; }
-        #feedback.incorrect { color: #ef4444; }
-
-        .answer-buttons button {
-            font-size: 1.25rem;
-            padding: 12px 24px;
-            margin: 8px;
-            border-radius: 12px;
-            font-weight: 600;
-            background-color: #e5e7eb;
-            color: #374151;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .answer-buttons button:hover {
-            background-color: #d1d5db;
-            transform: translateY(-2px);
-        }
-        
-        #next-round-btn, #submit-btn {
-            padding: 12px 24px;
-            font-size: 1.25rem;
-            font-weight: 600;
-            background-color: #4f46e5;
-            color: white;
-            border-radius: 12px;
-            margin-top: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-
-        #next-round-btn:hover, #submit-btn:hover {
-            background-color: #4338ca;
-            transform: translateY(-2px);
-        }
-
-        canvas {
-            display: block;
-            margin: 0 auto;
-            border: 4px solid #3b82f6;
+        #clockCanvas {
+            border: 5px solid #6366f1;
             border-radius: 50%;
-            background-color: #f9fafb;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06), 0 0 0 10px #e5e7eb;
+            background-color: #f8fafc;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: auto;
+            max-width: 400px; /* Adjust as needed */
+            aspect-ratio: 1 / 1; /* Keep it circular */
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .game-button {
+            background-color: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            border: none;
+        }
+        .game-button:hover {
+            background-color: #4f46e5;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .game-button:disabled {
+            background-color: #a5b4fc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        input[type="text"] {
+            border-radius: 9999px;
+            border: 2px solid #cbd5e1;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 250px;
+            text-align: center;
+            font-size: 1.125rem;
+        }
+        .level-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .level-button {
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        .level-button.active {
+            background-color: #6366f1;
+            color: white;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
 <div class="game-container">
-    <h1 class="text-3xl md:text-4xl">時計ゲーム</h1>
-    <p class="text-gray-500 mb-4">レベルを選択してください</p>
-
-    <div class="level-selection flex justify-center flex-wrap">
-        <button id="start-level-1" class="level-btn level-1-btn">レベル1 (何時)</button>
-        <button id="start-level-2" class="level-btn level-2-btn">レベル2 (5分刻み)</button>
-        <button id="start-level-3" class="level-btn level-3-btn">レベル3 (針合わせ)</button>
+    <h1 class="text-3xl font-bold mb-4">とけいがくしゅうゲーム</h1>
+    <p id="question" class="text-xl text-gray-700 mb-4">レベルをせんたくしてゲームをはじめてね！</p>
+    
+    <!-- レベル選択ボタン -->
+    <div class="level-selection" id="level-selection">
+        <button class="level-button active" data-level="1">レベル1</button>
+        <button class="level-button" data-level="2">レベル2</button>
+        <button class="level-button" data-level="3">レベル3</button>
+        <button class="level-button" data-level="4">レベル4</button>
     </div>
 
-    <div class="game-area">
-        <div id="prompt" class="text-2xl font-bold text-gray-700 my-4"></div>
-        <canvas id="clockCanvas" width="300" height="300"></canvas>
-        <div id="feedback" class="text-xl font-bold mt-4"></div>
-        
-        <div id="answer-options" class="answer-buttons mt-4 flex flex-wrap justify-center"></div>
+    <!-- 時計描画用キャンバス -->
+    <canvas id="clockCanvas" width="400" height="400"></canvas>
 
-        <div id="game-controls" class="game-controls flex justify-center">
-            <button id="submit-btn" style="display:none;">回答</button>
-            <button id="next-round-btn" style="display:none;">次の問題</button>
+    <!-- ユーザー入力とボタン -->
+    <div id="game-controls" class="w-full max-w-sm flex flex-col gap-4">
+        <!-- レベル1〜3用の入力欄 -->
+        <div id="text-input-group" class="w-full flex flex-col items-center gap-2" style="display: none;">
+            <input type="text" id="answerInput" placeholder="れい: じゅうじ はん" class="text-lg">
+            <button id="checkAnswerButton" class="game-button">こたえあわせ</button>
         </div>
+
+        <!-- レベル4用の説明 -->
+        <p id="level4-instruction" class="text-lg text-gray-600" style="display: none;">
+            マウスではりをうごかして、じかんにあわせてね！
+        </p>
+        <button id="nextQuestionButton" class="game-button" style="display: none;">つぎのもんだい</button>
+
+        <p id="feedback" class="text-lg font-bold mt-2"></p>
+    </div>
+
+    <!-- スコア表示 -->
+    <div class="mt-4 text-xl font-bold">
+        スコア: <span id="score">0</span>
     </div>
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const canvas = document.getElementById('clockCanvas');
-        const ctx = canvas.getContext('2d');
-        const promptEl = document.getElementById('prompt');
-        const feedbackEl = document.getElementById('feedback');
-        const answerOptionsEl = document.getElementById('answer-options');
-        const submitBtn = document.getElementById('submit-btn');
-        const nextRoundBtn = document.getElementById('next-round-btn');
+    // グローバル変数と定数の定義
+    const canvas = document.getElementById('clockCanvas');
+    const ctx = canvas.getContext('2d');
+    const radius = canvas.width / 2;
+    ctx.translate(radius, radius);
+    let gameData = {
+        level: 1,
+        score: 0,
+        targetTime: null,
+        userTime: { hour: 0, minute: 0 },
+        isDragging: false,
+        activeHand: null
+    };
 
-        // レベル選択ボタンのイベントリスナー
-        document.getElementById('start-level-1').addEventListener('click', () => startGame(1));
-        document.getElementById('start-level-2').addEventListener('click', () => startGame(2));
-        document.getElementById('start-level-3').addEventListener('click', () => startGame(3));
+    // UI要素の取得
+    const questionEl = document.getElementById('question');
+    const levelSelectionEl = document.getElementById('level-selection');
+    const answerInputEl = document.getElementById('answerInput');
+    const checkAnswerButton = document.getElementById('checkAnswerButton');
+    const nextQuestionButton = document.getElementById('nextQuestionButton');
+    const feedbackEl = document.getElementById('feedback');
+    const scoreEl = document.getElementById('score');
+    const textInputGroup = document.getElementById('text-input-group');
+    const level4Instruction = document.getElementById('level4-instruction');
 
-        let level = 0;
-        let targetTime = { hour: 0, minute: 0 };
-        let currentHour = 0;
-        let currentMinute = 0;
-        let handBeingDragged = null; // 'hour' or 'minute'
-        let mouseIsDown = false;
-        const handSensitivity = 0.5; // 針の感度を低めに設定
+    window.onload = function() {
+        // ゲームの初期設定
+        setupEventListeners();
+        drawClock();
+        updateLevelDisplay(gameData.level);
+    };
 
-        const clockCenterX = canvas.width / 2;
-        const clockCenterY = canvas.height / 2;
-        const clockRadius = canvas.width / 2 * 0.85;
-
-        // ゲームの初期化と開始
-        function startGame(newLevel) {
-            level = newLevel;
-            feedbackEl.textContent = '';
-            answerOptionsEl.innerHTML = '';
-            submitBtn.style.display = 'none';
-            nextRoundBtn.style.display = 'none';
-
-            // レベル1と2のゲーム開始
-            if (level === 1 || level === 2) {
-                generateTargetTime();
-                promptEl.textContent = 'この時計は何時ですか？';
-                drawClock(targetTime.hour, targetTime.minute);
-                createAnswerButtons();
-            }
-            // レベル3のゲーム開始
-            else if (level === 3) {
-                generateTargetTime();
-                promptEl.textContent = `針を動かしてこの時間に合わせてください: ${targetTime.hour}時${targetTime.minute}分`;
-                currentHour = 6;
-                currentMinute = 30;
-                drawClock(currentHour, currentMinute);
-                submitBtn.style.display = 'block';
-            }
-        }
-
-        // 正解時間をランダムに生成
-        function generateTargetTime() {
-            const hour = Math.floor(Math.random() * 12) + 1;
-            let minute;
-
-            if (level === 1) {
-                minute = 0;
-            } else {
-                minute = Math.floor(Math.random() * 12) * 5;
-            }
-            targetTime = { hour, minute };
-        }
-
-        // レベル1と2の回答ボタンを生成
-        function createAnswerButtons() {
-            const correctTimeStr = `${targetTime.hour}時${targetTime.minute}分`;
-            const options = new Set();
-            options.add(correctTimeStr);
-
-            while (options.size < 4) {
-                let distractorHour = Math.floor(Math.random() * 12) + 1;
-                let distractorMinute;
-
-                if (level === 1) {
-                    distractorMinute = 0;
-                } else {
-                    distractorMinute = Math.floor(Math.random() * 12) * 5;
-                }
-
-                const distractorTimeStr = `${distractorHour}時${distractorMinute}分`;
-                if (distractorTimeStr !== correctTimeStr) {
-                    options.add(distractorTimeStr);
-                }
-            }
-
-            const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
-
-            answerOptionsEl.innerHTML = '';
-            shuffledOptions.forEach(option => {
-                const button = document.createElement('button');
-                button.textContent = option;
-                button.classList.add('px-4', 'py-2', 'rounded-lg', 'bg-blue-200', 'hover:bg-blue-300', 'transition', 'duration-200');
-                button.addEventListener('click', () => checkAnswer(option));
-                answerOptionsEl.appendChild(button);
+    // イベントリスナーの設定
+    function setupEventListeners() {
+        // レベル選択ボタン
+        levelSelectionEl.querySelectorAll('.level-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const newLevel = parseInt(button.dataset.level, 10);
+                gameData.level = newLevel;
+                gameData.score = 0; // レベル変更でスコアをリセット
+                scoreEl.textContent = gameData.score;
+                updateLevelDisplay(newLevel);
+                startGame();
             });
-        }
-
-        // レベル1と2の回答をチェック
-        function checkAnswer(selectedTime) {
-            const correctTimeStr = `${targetTime.hour}時${targetTime.minute}分`;
-            if (selectedTime === correctTimeStr) {
-                feedbackEl.textContent = '正解です！';
-                feedbackEl.classList.add('correct');
-                feedbackEl.classList.remove('incorrect');
-            } else {
-                feedbackEl.textContent = `不正解です。正解は ${correctTimeStr} でした。`;
-                feedbackEl.classList.add('incorrect');
-                feedbackEl.classList.remove('correct');
-            }
-            answerOptionsEl.style.display = 'none';
-            nextRoundBtn.style.display = 'block';
-        }
-
-        // レベル3の回答をチェック
-        function checkLevel3Answer() {
-            if (currentHour === targetTime.hour && currentMinute === targetTime.minute) {
-                feedbackEl.textContent = '正解です！';
-                feedbackEl.classList.add('correct');
-                feedbackEl.classList.remove('incorrect');
-            } else {
-                feedbackEl.textContent = `不正解です。正解は ${targetTime.hour}時${targetTime.minute}分 でした。`;
-                feedbackEl.classList.add('incorrect');
-                feedbackEl.classList.remove('correct');
-            }
-            submitBtn.style.display = 'none';
-            nextRoundBtn.style.display = 'block';
-        }
-
-        // 次の問題に進む
-        nextRoundBtn.addEventListener('click', () => {
-            startGame(level);
-            answerOptionsEl.style.display = 'flex';
         });
+
+        // レベル1〜3の答え合わせボタン
+        checkAnswerButton.addEventListener('click', checkAnswer);
+        answerInputEl.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // レベル4の次の問題ボタン
+        nextQuestionButton.addEventListener('click', startGame);
+
+        // レベル4の時計操作
+        canvas.addEventListener('mousedown', handleMouseDown);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handleMouseUp);
+        canvas.addEventListener('mouseleave', handleMouseUp);
+    }
+
+    // レベルに応じたUI表示の切り替え
+    function updateLevelDisplay(level) {
+        levelSelectionEl.querySelectorAll('.level-button').forEach(button => {
+            button.classList.remove('active');
+            if (parseInt(button.dataset.level, 10) === level) {
+                button.classList.add('active');
+            }
+        });
+
+        textInputGroup.style.display = (level < 4) ? 'flex' : 'none';
+        level4Instruction.style.display = (level === 4) ? 'block' : 'none';
+        nextQuestionButton.style.display = 'none';
+        feedbackEl.textContent = '';
+    }
+
+    // 新しいゲームを開始
+    function startGame() {
+        // 問題を生成
+        generateNewTime(gameData.level);
+        // UIを更新（問題文と時計の描画）
+        updateUI();
+        feedbackEl.textContent = '';
+        answerInputEl.value = '';
+        checkAnswerButton.style.display = (gameData.level < 4) ? 'block' : 'none';
+        nextQuestionButton.style.display = 'none';
+    }
+
+    // レベルに応じて新しい時間を生成
+    function generateNewTime(level) {
+        const hour = Math.floor(Math.random() * 12) + 1;
+        let minute = 0;
+
+        switch (level) {
+            case 1:
+                minute = 0; // レベル1は丁度の時間のみ
+                break;
+            case 2:
+                minute = 30; // レベル2は30分のみ
+                break;
+            case 3:
+                minute = Math.floor(Math.random() * 12) * 5;
+                break;
+            case 4:
+                // レベル4では、ランダムにレベル1〜3のいずれかの時間を生成
+                const subLevel = Math.floor(Math.random() * 3) + 1;
+                generateNewTime(subLevel); // 再帰的に時間生成
+                gameData.userTime = { hour: 0, minute: 0 }; // ユーザーの針をリセット
+                return;
+            default:
+                break;
+        }
+
+        gameData.targetTime = { hour, minute };
+        console.log(`正解: ${hour}時${minute}分`); // デバッグ用
+    }
+
+    // 答え合わせの処理 (レベル1〜3)
+    function checkAnswer() {
+        const input = answerInputEl.value.trim();
+        let userHour = 0;
+        let userMinute = 0;
+
+        // レベル1は「〇じ」の形式を想定
+        if (gameData.level === 1) {
+            const numStr = input.replace(/[^0-9]/g, '');
+            if (numStr) {
+                userHour = parseInt(numStr, 10);
+            }
+        } else {
+            // レベル2と3は「〇じ〇ふん」や「〇じ はん」に対応
+            // ひらがなを数字に変換する辞書
+            const hiraganaToNumber = {
+                'いち': 1, 'に': 2, 'さん': 3, 'よん': 4, 'ご': 5, 'ろく': 6,
+                'なな': 7, 'はち': 8, 'く': 9, 'じゅう': 10, 'じゅういち': 11, 'じゅうに': 12,
+                'はん': 30
+            };
+            const parts = input.split(' ');
+            let hourStr = parts[0] || '';
+            let minuteStr = parts[1] || '';
+
+            // 「じ」を削除
+            hourStr = hourStr.replace('じ', '');
+            
+            // ひらがなを数字に変換
+            userHour = hiraganaToNumber[hourStr] || parseInt(hourStr, 10) || 0;
+            if (minuteStr === 'はん') {
+                userMinute = 30;
+            } else {
+                userMinute = hiraganaToNumber[minuteStr] || parseInt(minuteStr, 10) || 0;
+            }
+        }
         
-        // レベル3の回答ボタンのイベントリスナー
-        submitBtn.addEventListener('click', checkLevel3Answer);
-
-        // 時計を描画
-        function drawClock(hour, minute) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 時計の文字盤
-            ctx.beginPath();
-            ctx.arc(clockCenterX, clockCenterY, clockRadius, 0, 2 * Math.PI);
-            ctx.fillStyle = '#fff';
-            ctx.fill();
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // 数字を描画
-            ctx.font = '20px Noto Sans JP';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillStyle = '#333';
-            for (let i = 1; i <= 12; i++) {
-                const angle = (i - 3) * (Math.PI / 6);
-                const x = clockCenterX + clockRadius * 0.85 * Math.cos(angle);
-                const y = clockCenterY + clockRadius * 0.85 * Math.sin(angle);
-                ctx.fillText(i, x, y);
-            }
-
-            // 時針
-            const hourAngle = ((hour % 12) + (minute / 60) - 3) * (Math.PI / 6);
-            drawHand(hourAngle, clockRadius * 0.5, 6, '#333');
-
-            // 分針
-            const minuteAngle = (minute / 60 * 2 * Math.PI) - (Math.PI / 2);
-            drawHand(minuteAngle, clockRadius * 0.7, 4, '#333');
-            
-            // 中心点
-            ctx.beginPath();
-            ctx.arc(clockCenterX, clockCenterY, 8, 0, 2 * Math.PI);
-            ctx.fillStyle = '#3b82f6';
-            ctx.fill();
+        const { hour: targetHour, minute: targetMinute } = gameData.targetTime;
+        
+        let isCorrect = false;
+        // レベル1は分の回答がなくても正解とみなす
+        if (gameData.level === 1 && userMinute === 0) {
+             isCorrect = userHour === targetHour;
+        } else {
+             isCorrect = userHour === targetHour && userMinute === targetMinute;
         }
 
-        // 針を描画するヘルパー関数
-        function drawHand(angle, length, width, color) {
-            ctx.beginPath();
-            ctx.lineWidth = width;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = color;
-            ctx.moveTo(clockCenterX, clockCenterY);
-            ctx.lineTo(
-                clockCenterX + length * Math.cos(angle),
-                clockCenterY + length * Math.sin(angle)
-            );
-            ctx.stroke();
+        if (isCorrect) {
+            gameData.score++;
+            scoreEl.textContent = gameData.score;
+            showFeedback('せいかいです！', 'green');
+            nextQuestionButton.style.display = 'block';
+            checkAnswerButton.style.display = 'none';
+        } else {
+            const targetMinuteText = targetMinute === 30 ? 'はん' : `${targetMinute}ふん`;
+            showFeedback(`ざんねん！ せいかいは ${targetHour}じ ${targetMinuteText} です。`, 'red');
+            nextQuestionButton.style.display = 'block';
+            checkAnswerButton.style.display = 'none';
+        }
+    }
+
+    // 答え合わせの処理 (レベル4)
+    function checkLevel4Answer() {
+        const { hour: targetHour, minute: targetMinute } = gameData.targetTime;
+        const { hour: userHour, minute: userMinute } = gameData.userTime;
+        
+        // 5分刻みで比較
+        const userMinuteRounded = Math.round(userMinute / 5) * 5;
+
+        // 長針を動かしたときに短針が連動して動くように修正
+        const hourFromMinute = Math.floor(userMinute / 60);
+        const actualHour = userHour % 12 + hourFromMinute;
+
+        if ((targetHour % 12) === (actualHour % 12) && targetMinute === userMinuteRounded) {
+            gameData.score++;
+            scoreEl.textContent = gameData.score;
+            showFeedback('せいかいです！', 'green');
+        } else {
+            const targetMinuteText = targetMinute === 30 ? 'はん' : `${targetMinute}ふん`;
+            showFeedback(`ざんねん！ せいかいは ${targetHour}じ ${targetMinuteText} です。`, 'red');
+        }
+        nextQuestionButton.style.display = 'block';
+    }
+
+
+    // UIの更新
+    function updateUI() {
+        const level = gameData.level;
+        if (level === 4) {
+            const { hour, minute } = gameData.targetTime;
+            const minuteText = minute > 0 ? `${minute}ふん` : '';
+            questionEl.textContent = `${hour}じ ${minuteText}にあわせてね！`;
+        } else {
+            const { hour, minute } = gameData.targetTime;
+            const minuteText = minute === 30 ? 'はん' : `${minute}ふん`;
+            // レベル1は「〇じ」のみの表記
+            const questionText = level === 1 ? `${hour}じ？` : `いまなんじ？ (${hour}じ ${minuteText})`;
+            questionEl.textContent = questionText;
+            
+            answerInputEl.value = '';
+            // レベル1のplaceholderを「〇じ」に変更
+            answerInputEl.placeholder = (level === 1) ? 'れい: じゅうじ' : 'れい: じゅうじ はん';
+        }
+        // レベル4ではユーザーの針を操作するので、初期状態に戻す
+        if (level === 4) {
+             drawClock(gameData.userTime);
+        } else {
+            drawClock(gameData.targetTime);
+        }
+    }
+
+    // メッセージ表示
+    function showFeedback(message, color) {
+        feedbackEl.textContent = message;
+        feedbackEl.style.color = color;
+    }
+
+    // 時計の描画
+    function drawClock(time = { hour: 0, minute: 0 }) {
+        // キャンバスのクリア
+        ctx.clearRect(-radius, -radius, canvas.width, canvas.height);
+        
+        // 外枠
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.9, 0, 2 * Math.PI);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fill();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#6366f1';
+        ctx.stroke();
+
+        // センターの点
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.04, 0, 2 * Math.PI);
+        ctx.fillStyle = '#334155';
+        ctx.fill();
+
+        // 数字の描画
+        ctx.fillStyle = '#475569';
+        ctx.font = 'bold ' + radius * 0.15 + 'px Inter';
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'center';
+        for (let num = 1; num <= 12; num++) {
+            const angle = (num * Math.PI / 6) - Math.PI / 2;
+            const x = radius * 0.75 * Math.cos(angle);
+            const y = radius * 0.75 * Math.sin(angle);
+            ctx.fillText(num.toString(), x, y);
+        }
+        
+        // 針の描画
+        const hour = time.hour;
+        const minute = time.minute;
+        drawHand(
+            (hour % 12) * Math.PI / 6 + (minute * Math.PI / (6 * 60)) - Math.PI / 2,
+            radius * 0.5,
+            radius * 0.05,
+            '#334155'
+        );
+        drawHand(
+            minute * Math.PI / 30 - Math.PI / 2,
+            radius * 0.8,
+            radius * 0.03,
+            '#475569'
+        );
+    }
+    
+    // 針を描くヘルパー関数
+    function drawHand(angle, length, width, color) {
+        ctx.beginPath();
+        ctx.lineWidth = width;
+        ctx.lineCap = 'round';
+        ctx.moveTo(0, 0);
+        ctx.rotate(angle);
+        ctx.strokeStyle = color;
+        ctx.lineTo(0, -length);
+        ctx.stroke();
+        ctx.rotate(-angle);
+    }
+
+    // レベル4の操作ロジック
+    function handleMouseDown(e) {
+        if (gameData.level !== 4) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left - radius;
+        const y = e.clientY - rect.top - radius;
+        const dist = Math.sqrt(x * x + y * y);
+
+        // 短い針の範囲 (マウスが中央からある程度の距離にある場合)
+        if (dist > radius * 0.2 && dist < radius * 0.65) {
+            gameData.activeHand = 'hour';
+            gameData.isDragging = true;
+        } 
+        // 長い針の範囲
+        else if (dist > radius * 0.65 && dist < radius * 0.85) {
+            gameData.activeHand = 'minute';
+            gameData.isDragging = true;
+        }
+    }
+
+    function handleMouseMove(e) {
+        if (gameData.level !== 4 || !gameData.isDragging) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left - radius;
+        const y = e.clientY - rect.top - radius;
+        let angle = Math.atan2(y, x) + Math.PI / 2; // 角度を計算
+        if (angle < 0) angle += 2 * Math.PI; // 角度を0〜2πの範囲に
+
+        if (gameData.activeHand === 'hour') {
+            // 短い針を動かした時
+            const newHour = Math.floor(angle * 12 / (2 * Math.PI));
+            gameData.userTime.hour = newHour === 0 ? 12 : newHour;
+            // 短針を動かしても長針はそのまま
+        } else if (gameData.activeHand === 'minute') {
+            // 長い針を動かした時
+            const newMinute = Math.round(angle * 60 / (2 * Math.PI));
+            gameData.userTime.minute = newMinute % 60; // 0-59の範囲に
+            // 長い針を動かしたときに、短い針も連動して動くように修正
+            const hourOffset = Math.floor(newMinute / 60);
+            const baseHour = gameData.userTime.hour;
+            gameData.userTime.hour = (baseHour + hourOffset) % 12;
+            if (gameData.userTime.hour === 0) gameData.userTime.hour = 12;
         }
 
-        // レベル3の操作ハンドラ
-        canvas.addEventListener('mousedown', (e) => {
-            if (level !== 3) return;
-            mouseIsDown = true;
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+        drawClock(gameData.userTime);
+    }
 
-            const hourHandLength = clockRadius * 0.5;
-            const minuteHandLength = clockRadius * 0.7;
-            const distFromCenter = Math.sqrt(Math.pow(mouseX - clockCenterX, 2) + Math.pow(mouseY - clockCenterY, 2));
-
-            // どの針を掴んでいるか判断
-            if (distFromCenter < minuteHandLength) {
-                const angle = Math.atan2(mouseY - clockCenterY, mouseX - clockCenterX) + Math.PI / 2;
-                const minuteAngle = (currentMinute / 60 * 2 * Math.PI);
-                const hourAngle = ((currentHour % 12) + (currentMinute / 60)) / 12 * 2 * Math.PI;
-
-                // どの針がマウスに近いか判定
-                const diffMin = Math.min(Math.abs(angle - minuteAngle), Math.abs(angle - minuteAngle + 2 * Math.PI), Math.abs(angle - minuteAngle - 2 * Math.PI));
-                const diffHour = Math.min(Math.abs(angle - hourAngle), Math.abs(angle - hourAngle + 2 * Math.PI), Math.abs(angle - hourAngle - 2 * Math.PI));
-                
-                if (diffMin < diffHour) {
-                    handBeingDragged = 'minute';
-                } else {
-                    handBeingDragged = 'hour';
-                }
-            } else {
-                handBeingDragged = null;
-            }
-        });
-
-        canvas.addEventListener('mousemove', (e) => {
-            if (!mouseIsDown || !handBeingDragged) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            let angle = Math.atan2(mouseY - clockCenterY, mouseX - clockCenterX);
-            if (angle < 0) {
-                angle += 2 * Math.PI;
-            }
-            
-            // 針の動きの感度を低くする
-            if (handBeingDragged === 'minute') {
-                const newMinute = Math.round((angle / (2 * Math.PI)) * 60 / 5) * 5;
-                if (Math.abs(newMinute - currentMinute) >= handSensitivity) {
-                    currentMinute = newMinute;
-                    if (currentMinute === 60) currentMinute = 0;
-                    currentHour = ((currentHour % 12) + Math.floor(newMinute / 60));
-                }
-            } else if (handBeingDragged === 'hour') {
-                const newHour = Math.round((angle / (2 * Math.PI)) * 12);
-                if (Math.abs(newHour - currentHour) >= handSensitivity) {
-                    currentHour = newHour === 0 ? 12 : newHour;
-                }
-            }
-
-            drawClock(currentHour, currentMinute);
-        });
-
-        canvas.addEventListener('mouseup', () => {
-            if (level !== 3) return;
-            mouseIsDown = false;
-            handBeingDragged = null;
-        });
-
-        // ページロード時の初期描画
-        window.onload = () => {
-            drawClock(10, 10);
-        };
-    });
+    function handleMouseUp(e) {
+        if (gameData.level !== 4 || !gameData.isDragging) return;
+        gameData.isDragging = false;
+        gameData.activeHand = null;
+        // 5分刻みに丸める
+        gameData.userTime.minute = Math.round(gameData.userTime.minute / 5) * 5;
+        if (gameData.userTime.minute === 60) {
+            gameData.userTime.minute = 0;
+            gameData.userTime.hour = (gameData.userTime.hour % 12) + 1;
+            if (gameData.userTime.hour === 0) gameData.userTime.hour = 12;
+        }
+        // 針を丸めた位置に再描画
+        drawClock(gameData.userTime);
+        checkLevel4Answer();
+    }
 </script>
 
 </body>
